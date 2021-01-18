@@ -1,0 +1,251 @@
+.App {
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+label {
+    display: none;
+}
+
+.input-group-custom {
+    border-bottom: 0.001em solid #eeeeee;
+}
+
+input {
+    /*width: 126%;*/
+    padding: .7em;
+    font-size: small;
+    outline: none;
+    border: none;
+    /*border-bottom: 0.001em solid #eeeeee;*/
+    text-align: center;
+    background: transparent;
+    font-family: 'Raleway', sans-serif;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background: #0066ff;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 3em;
+    font-size: 16px;
+    text-align: center;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    -webkit-appearance: none;
+    font-family: 'Raleway', sans-serif;
+}
+
+#main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 4.8rem 0 4rem 0;
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+    /*width: 12em;*/
+}
+
+li {
+    list-style-type: none;
+    text-decoration: underline;
+    padding: 2em;
+}
+
+#main img {
+    width: 8em;
+    height: 5.5em;
+    cursor: pointer;
+}
+
+small {
+    font-size: 10px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+#form {
+    font-family: "Times New Roman", "Times New Roman", cursive;
+    font-weight: normal;
+    text-align: center;
+    margin-top: 1em;
+    color: darkblue;
+}
+
+#error {
+    color: red;
+    padding: 3rem 0 .2rem 0;
+    margin: 1.4rem;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    font-family: 'Raleway', sans-serif;
+}
+
+#bottom {
+    padding: -4rem;
+    text-align: center;
+    margin-top: 20vh;
+    box-sizing: border-box;
+}
+
+.pure-material-progress-circular {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 50%;
+    padding: 0.25em;
+    position: absolute;
+    text-align: center;
+    z-index: 1;
+    width: 3em;
+    height: 3em;
+    color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
+    background-color: transparent;
+    font-size: 16px;
+    overflow: hidden;
+}
+
+.pure-material-progress-circular::-webkit-progress-bar {
+    background-color: transparent;
+}
+
+/* Indeterminate */
+.pure-material-progress-circular:indeterminate {
+    -webkit-mask-image: linear-gradient(transparent 50%, black 50%), linear-gradient(to right, transparent 50%, black 50%);
+    mask-image: linear-gradient(transparent 50%, black 50%), linear-gradient(to right, transparent 50%, black 50%);
+    animation: pure-material-progress-circular 6s infinite cubic-bezier(0.3, 0.6, 1, 1);
+}
+
+:-ms-lang(x), .pure-material-progress-circular:indeterminate {
+    animation: none;
+}
+
+.pure-material-progress-circular:indeterminate::before,
+.pure-material-progress-circular:indeterminate::-webkit-progress-value {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    margin-bottom: 0.25em;
+    border: solid 0.25em transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    width: 100% !important;
+    height: 100%;
+    background-color: transparent;
+    animation: pure-material-progress-circular-pseudo 0.75s infinite linear alternate;
+}
+
+.pure-material-progress-circular:indeterminate::-moz-progress-bar {
+    box-sizing: border-box;
+    border: solid 0.25em transparent;
+    border-top-color: currentColor;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    animation: pure-material-progress-circular-pseudo 0.75s infinite linear alternate;
+}
+
+.pure-material-progress-circular:indeterminate::-ms-fill {
+    animation-name: -ms-ring;
+}
+
+@keyframes pure-material-progress-circular {
+    0% {
+        transform: rotate(0deg);
+    }
+    12.5% {
+        transform: rotate(180deg);
+        animation-timing-function: linear;
+    }
+    25% {
+        transform: rotate(630deg);
+    }
+    37.5% {
+        transform: rotate(810deg);
+        animation-timing-function: linear;
+    }
+    50% {
+        transform: rotate(1260deg);
+    }
+    62.5% {
+        transform: rotate(1440deg);
+        animation-timing-function: linear;
+    }
+    75% {
+        transform: rotate(1890deg);
+    }
+    87.5% {
+        transform: rotate(2070deg);
+        animation-timing-function: linear;
+    }
+    100% {
+        transform: rotate(2520deg);
+    }
+}
+
+@keyframes pure-material-progress-circular-pseudo {
+    0% {
+        transform: rotate(-30deg);
+    }
+    29.4% {
+        border-left-color: transparent;
+    }
+    29.41% {
+        border-left-color: currentColor;
+    }
+    64.7% {
+        border-bottom-color: transparent;
+    }
+    64.71% {
+        border-bottom-color: currentColor;
+    }
+    100% {
+        border-left-color: currentColor;
+        border-bottom-color: currentColor;
+        transform: rotate(225deg);
+    }
+}
+
+/* small desktop */
+@media all and (max-width: 1200px) {
+    /* defaults */
+}
+
+/* tablet */
+@media all and (max-width: 1024px) {
+    #bottom {
+        /*margin: 0;*/
+    }
+}
+
+/* mobile phone */
+@media all and (max-width: 768px) {
+    #bottom {
+        /*margin: 6.6666px;*/
+    }
+
+    #main {
+        /*width: 94%;*/
+    }
+
+    #bottom {
+        /*width: 80%;*/
+    }
+}
