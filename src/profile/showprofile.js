@@ -35,6 +35,9 @@ const ShowProfile = ({handleClickEdit, state}) => {
             <li className="nav-item">
                 <Link className="nav-link" to="/logout">Logout</Link>
             </li>
+            {state.profile.role === 'super_admin' ? <li className="nav-item">
+                <Link className="nav-link" to="/profile/admin">Go to Admin Dashboard</Link>
+            </li> : '' }
             <input type="submit" onClick={handleClickEdit} value="Edit Profile"/>
         </div>
     )

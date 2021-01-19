@@ -2,6 +2,7 @@ import React from 'react'
 import './../login/login.css'
 import API from "../api"
 import ShowProfile from "./showprofile"
+import {Link} from "react-router-dom";
 
 export default class Profile extends React.Component {
     constructor(props) {

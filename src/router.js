@@ -6,6 +6,7 @@ import Login from "./login/login"
 import Register from "./register/signup"
 import Profile from "./profile/profile"
 import EditProfile from "./profile/editprofile";
+import AdminProfile from "./admin/profile";
 
 export default function AppRouter() {
     return (<Router>
@@ -14,6 +15,7 @@ export default function AppRouter() {
                 <Protected path="/logout" exact={true} component={Logout}/>
                 <Protected path="/profile" exact={true} component={Profile}/>
                 <Protected path="/profile/edit" exact={true} component={EditProfile}/>
+                <Protected path="/profile/admin" exact={true} component={AdminProfile}/>
                 <Route path="/register" exact={true} component={Register}/>
                 <Route path="/">
                     <Login/>
