@@ -63,7 +63,7 @@ export default class CreateProfile extends React.Component {
         })
         if (!this.state.upload) {
             this.setState({
-                error: "Please upload an image for your profile",
+                error: "Please upload an image for user profile",
                 loading: false
             })
             return false

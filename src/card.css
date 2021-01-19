@@ -7,43 +7,6 @@ h1 {
     padding: 2rem;
 }
 
-.card-img-top {
-    height: 8rem;
-    padding: .2rem;
-    width: 8rem;
-    text-align-last: justify;
-}
-
-nav {
-    width: fit-content;
-    text-align: center;
-    border: 1px solid transparent;
-    padding: 2rem;
-}
-
-.line {
-    display: inline-block;
-    text-decoration: none;
-}
-
-h2 {
-    padding: 1rem;
-}
-
-.end * {
-    padding: .1rem;
-    cursor: pointer;
-}
-
-.add {
-    margin: 1em;
-}
-
-.form-group input {
-    text-align: left;
-    margin-bottom: .8rem;
-}
-
 th {
     text-align: center;
     font-weight: bolder;
@@ -53,35 +16,11 @@ tr {
     text-align: center;
 }
 
-.pagination {
-    padding: .3rem;
+.input-group-custom li {
+    text-decoration: none;
+    display: inline-block;
 }
 
-.notifications * {
-    margin: .2rem;
-    padding: .2rem;
-    display: flex;
-    flex-flow: row wrap;
+.clickable {
     cursor: pointer;
-}
-
-.notification-main {
-    border-right: 1px solid #eeeeee;
-    border-left: 1px solid #eeeeee;
-    display: flex;
-    flex-flow: column wrap;
-}
-
-.notification-actions {
-    padding: .8rem;
-    margin: .5rem;
-    font-size: x-large;
-}
-
-.notification-actions * {
-    margin: .2rem;
-}
-
-.notification-read {
-    background: #dddddd;
 }

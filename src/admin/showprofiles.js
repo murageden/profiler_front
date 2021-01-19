@@ -41,8 +41,8 @@ const ShowProfiles = ({handleClickEdit, handleClickDelete, users}) => {
                             <td>{user.role}</td>
                             <td>
                                 <div className="end">
-                                    <FontAwesomeIcon icon={faEdit} onClick={() => handleClickEdit(user.id)}/>
-                                    <FontAwesomeIcon icon={faTrash} onClick={() => handleClickDelete(user.id)}/>
+                                    <FontAwesomeIcon className='clickable' icon={faEdit} onClick={() => handleClickEdit(user.id)}/>
+                                    <FontAwesomeIcon className='clickable' icon={faTrash} onClick={() => handleClickDelete(user.id)}/>
                                 </div>
                             </td>
                         </tr>
