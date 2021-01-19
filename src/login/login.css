@@ -16,6 +16,17 @@ label {
     border-bottom: 0.001em solid #eeeeee;
 }
 
+.show-labels label {
+    display: inline-block;
+    padding: .4rem;
+    margin: .2rem;
+    color: #0f0f10;
+}
+
+.show-labels .dark {
+    margin-right: .8em;
+}
+
 input {
     /*width: 126%;*/
     padding: .7em;

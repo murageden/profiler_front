@@ -3,7 +3,16 @@ import './../login/login.css'
 import API from "../api"
 import logo from "../logo.png"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faEnvelope, faEye, faEyeSlash, faImage, faPhone, faUser, faUserSecret} from "@fortawesome/free-solid-svg-icons"
+import {
+    faEnvelope,
+    faEye,
+    faEyeSlash,
+    faImage,
+    faPhone,
+    faUser,
+    faUserLock,
+    faUserSecret
+} from "@fortawesome/free-solid-svg-icons"
 import {Link} from "react-router-dom"
 
 export default class EditProfile extends React.Component {
@@ -11,11 +20,11 @@ export default class EditProfile extends React.Component {
         super(props)
         this.passwordInput = React.createRef()
         this.state = {
-            profile: {},
             id: localStorage.getItem('editingId') || '',
+            userId: localStorage.getItem('userId'),
             error: '',
             email: '',
-            role: 'normal_user',
+            role: '',
             fullName: '',
             avatar: '',
             phone: '',
@@ -31,7 +40,11 @@ export default class EditProfile extends React.Component {
     componentDidMount() {
         API.get(`/users/${this.state.id}`).then(res => {
             this.setState({
-                profile: res.data.user
+                role: res.data.user.role,
+                fullName: res.data.user.fullName,
+                email: res.data.user.email,
+                phone: res.data.user.phone,
+                avatar: res.data.user.profilePhotoUrl
             })
         })
     }
@@ -50,17 +63,11 @@ export default class EditProfile extends React.Component {
         this.setState({
             loading: true
         })
-        if (!this.state.upload) {
-            this.setState({
-                error: "Please upload an image for user profile",
-                loading: false
-            })
-            return false
-        } else {
+        if (this.state.upload) {
             const data = new FormData()
             data.append('file', this.state.upload)
             API.post('/uploads', data).then(res => {
-                if (!(res.status === 200)) {
+                if (res.status !== 200) {
                     this.setState({
                         error: "There was an error uploading the file",
                         loading: false
@@ -71,16 +78,92 @@ export default class EditProfile extends React.Component {
                 this.setState({
                     avatar
                 })
-                if (!this.state.fullName || !this.state.avatar || !this.state.phone || !this.state.email || !this.state.password) {
-                    console.log(this.state)
+                API.put(`users/profile/${this.state.id}`, {
+                    email: this.state.email.trim(),
+                    fullName: this.state.fullName.trim(),
+                    role: this.state.role,
+                    avatar: this.state.avatar,
+                    phone: this.state.phone.trim()
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.state.userId !== this.state.id ? window.location.replace('/profile/admin') : window.location.replace('/profile')
+                    } else {
+                        this.setState({
+                            error: "There was an error uploading the data",
+                            loading: false
+                        })
+                        return false
+                    }
+                }).catch(e => {
                     this.setState({
-                        error: "Missing fields were supplied",
+                        error: 'Updating user profile. This is normally because sensitive login information was changed. Please logout, log in and try again',
+                        loading: false
+                    })
+                })
+            })
+        } else if (this.state.userId === this.state.id && this.state.password.trim() !== '') {
+            // Update Password
+            API.put(`users/password/${this.state.id}`, {
+                newPassword: this.state.password.trim()
+            }).then(res => {
+                if (res.status !== 200) {
+                    this.setState({
+                        error: "There was an error uploading the file",
                         loading: false
                     });
-                    return false;
-                } else {
-                    console.log(this.state)
+                    return false
                 }
+                API.put(`users/profile/${this.state.id}`, {
+                    email: this.state.email.trim(),
+                    fullName: this.state.fullName.trim(),
+                    role: this.state.role,
+                    avatar: this.state.avatar,
+                    phone: this.state.phone.trim()
+                }).then(res => {
+                    if (res.status === 200) {
+                        this.state.userId !== this.state.id ? window.location.replace('/profile/admin') : window.location.replace('/profile')
+                    } else {
+                        this.setState({
+                            error: "There was an error uploading the data",
+                            loading: false
+                        })
+                        return false
+                    }
+                }).catch(e => {
+                    this.setState({
+                        error: 'Updating user profile. This is normally because sensitive login information was changed. Please logout, log in and try again',
+                        loading: false
+                    })
+                })
+            }).catch(e => {
+                this.setState({
+                    error: 'Updating user profile. This is normally because sensitive login information was changed. Please logout, log in and try again',
+                    loading: false
+                })
+            })
+            // Update Profile
+        } else {
+            API.put(`users/profile/${this.state.id}`, {
+                email: this.state.email.trim(),
+                fullName: this.state.fullName.trim(),
+                role: this.state.role,
+                avatar: this.state.avatar,
+                phone: this.state.phone.trim()
+            }).then(res => {
+                if (res.status === 200) {
+                    this.state.userId !== this.state.id ? window.location.replace('/profile/admin') : window.location.replace('/profile')
+                } else {
+                    this.setState({
+                        error: "There was an error uploading the data",
+                        loading: false
+                    })
+                    return false
+                }
+            }).catch(e => {
+                this.setState({
+                    error: 'Updating user profile. This is normally because sensitive login information was changed. Please logout, log in and try again',
+                    loading: false
+                })
             })
         }
     }
@@ -110,30 +193,43 @@ export default class EditProfile extends React.Component {
                 <div id='main'>
                     <img id="logo" alt="logo" src={logo}/>
                 </div>
-                <li className="nav-item">
+                {this.state.userId === this.state.id ? <li className="nav-item">
                     <Link className="nav-link" to="/profile">Back to My Profile</Link>
-                </li>
+                </li> : <li className="nav-item">
+                    <Link className="nav-link" to="/profile/admin">Back to Admin Dashboard</Link>
+                </li>}
                 <div id='form'>
                     <form name="form0" method="POST" action="#" onSubmit="return false">
                         <div className="input-group-custom">
                             <FontAwesomeIcon className="dark" icon={faUser}/>
                             <label htmlFor="fullName">Full Name</label>
                             <input type="text" name="fullName" id="fullName"
-                                   defaultValue={this.state.profile.fullName} onChange={this.handleChange} placeholder="Full Name" required/>
+                                   defaultValue={this.state.fullName} onChange={this.handleChange}
+                                   placeholder="Full Name"
+                                   required/>
                         </div>
-                        <div className="input-group-custom">
+                        {this.state.userId === this.state.id ? <div className="input-group-custom">
                             <FontAwesomeIcon className="dark" icon={faEnvelope}/>
                             <label htmlFor="email">Email</label>
-                            <input type="email" name="email" id="email" defaultValue={this.state.profile.email}
+                            <input type="email" name="email" id="email" defaultValue={this.state.email}
                                    onChange={this.handleChange} placeholder="Email" required/>
-                        </div>
-                        <div className="input-group-custom">
+                        </div> : ''}
+                        {this.state.userId === this.state.id ? <div className="input-group-custom">
                             <FontAwesomeIcon className="dark" icon={faPhone}/>
                             <label htmlFor="phone">Phone</label>
-                            <input type="phone" name="phone" id="phone" defaultValue={this.state.profile.phone}
+                            <input type="phone" name="phone" id="phone" defaultValue={this.state.phone}
                                    onChange={this.handleChange} placeholder="Phone" required/>
-                        </div>
+                        </div> : ''}
 
+                        {this.state.userId !== this.state.id ? <div className="input-group-custom show-labels">
+                            <FontAwesomeIcon className="dark" icon={faUserLock}/>
+                            <input type="radio" name="role" id="role-admin" value="super_admin"
+                                   checked={this.state.role === 'super_admin'} onChange={this.handleChange} required/>
+                            <label htmlFor="role-admin">Admin</label>
+                            <input type="radio" name="role" id="role-normal" checked={this.state.role === 'normal_user'}
+                                   value="normal_user" onChange={this.handleChange} required/>
+                            <label htmlFor="role-normal">Normal User</label>
+                        </div> : ''}
 
                         {this.state.loading ? <progress className="pure-material-progress-circular"/> : ''}
 
@@ -144,7 +240,8 @@ export default class EditProfile extends React.Component {
                                    id="upload"
                                    onChange={this.onFileChangeHandler} required/>
                         </div>
-                        <div className="input-group-custom">
+
+                        {this.state.userId === this.state.id ? <div className="input-group-custom">
                             <FontAwesomeIcon className="dark" icon={faUserSecret}/>
                             <label htmlFor="password">Password</label>
                             <input type="password" ref={this.passwordInput} name="password" id="password"
@@ -154,7 +251,7 @@ export default class EditProfile extends React.Component {
                             <FontAwesomeIcon className="light clickable"
                                              onClick={(event => this.togglePasswordEye(event))}
                                              icon={this.state.eye ? faEyeSlash : faEye}/>
-                        </div>
+                        </div> : ''}
 
                         {this.state.error ? <p id={'error'}>{this.state.error}</p> : ''}
 

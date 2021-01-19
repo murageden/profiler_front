@@ -6,7 +6,7 @@ import {
     faUser,
     faEnvelope,
     faPhone,
-    faLockOpen,
+    faUserLock,
 } from "@fortawesome/free-solid-svg-icons"
 
 const ShowProfile = ({handleClickEdit, state}) => {
@@ -29,7 +29,7 @@ const ShowProfile = ({handleClickEdit, state}) => {
                 <li className='line'>{state.profile.phone}</li>
             </div>
             <div className="input-group-custom">
-                <FontAwesomeIcon className="dark" icon={faLockOpen}/>
+                <FontAwesomeIcon className="dark" icon={faUserLock}/>
                 <li className='line'>{state.profile.role === 'normal_user' ? 'Ordinary User' : 'Admin'}</li>
             </div>
             <li className="nav-item">
@@ -37,7 +37,7 @@ const ShowProfile = ({handleClickEdit, state}) => {
             </li>
             {state.profile.role === 'super_admin' ? <li className="nav-item">
                 <Link className="nav-link" to="/profile/admin">Go to Admin Dashboard</Link>
-            </li> : '' }
+            </li> : ''}
             <input type="submit" onClick={() => handleClickEdit(state.profile.id)} value="Edit Profile"/>
         </div>
     )

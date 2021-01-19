@@ -3,7 +3,16 @@ import logo from './../logo.png'
 import './../login/login.css'
 import API from "./../api"
 import {Link, Redirect} from 'react-router-dom'
-import {faEye, faEyeSlash, faUser, faUserSecret, faEnvelope, faPhone, faImage} from "@fortawesome/free-solid-svg-icons"
+import {
+    faEye,
+    faEyeSlash,
+    faUser,
+    faUserSecret,
+    faEnvelope,
+    faPhone,
+    faImage,
+    faUserLock
+} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 
 export default class CreateProfile extends React.Component {
@@ -147,6 +156,13 @@ export default class CreateProfile extends React.Component {
                                    onChange={this.handleChange} placeholder="Phone" required/>
                         </div>
 
+                        <div className="input-group-custom show-labels">
+                            <FontAwesomeIcon className="dark" icon={faUserLock}/>
+                            <input type="radio" name="role" id="role-admin" value="super_admin" checked={this.state.role === 'super_admin'} onChange={this.handleChange} required/>
+                            <label htmlFor="role-admin">Admin</label>
+                            <input type="radio" name="role" id="role-normal" checked={this.state.role === 'normal_user'} value="normal_user" onChange={this.handleChange} required/>
+                            <label htmlFor="role-normal">Normal User</label>
+                        </div>
 
                         {this.state.loading ? <progress className="pure-material-progress-circular"/> : ''}
 

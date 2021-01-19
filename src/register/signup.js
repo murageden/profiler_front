@@ -90,7 +90,7 @@ export default class Register extends React.Component {
             const data = new FormData()
             data.append('file', this.state.upload)
             API.post('/uploads', data).then(res => {
-                if (!(res.status === 200)) {
+                if (res.status !== 200) {
                     this.setState({
                         error: "There was an error uploading the file",
                         loading: false
