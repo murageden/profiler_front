@@ -14,7 +14,7 @@ const ShowProfile = ({handleClickEdit, state}) => {
     return (
         <div className="card">
             <div id='main'>
-                <img src={url} alt='profile photo'/>
+                <img src={url} alt='profile'/>
             </div>
             <div className="input-group-custom">
                 <FontAwesomeIcon className="dark" icon={faUser}/>
@@ -38,7 +38,7 @@ const ShowProfile = ({handleClickEdit, state}) => {
             {state.profile.role === 'super_admin' ? <li className="nav-item">
                 <Link className="nav-link" to="/profile/admin">Go to Admin Dashboard</Link>
             </li> : '' }
-            <input type="submit" onClick={handleClickEdit} value="Edit Profile"/>
+            <input type="submit" onClick={() => handleClickEdit(state.profile.id)} value="Edit Profile"/>
         </div>
     )
 }

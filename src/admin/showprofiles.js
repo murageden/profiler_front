@@ -14,12 +14,16 @@ const ShowProfiles = ({handleClickEdit, handleClickDelete, users}) => {
             <div id='main'>
                 <img id="logo" alt="logo" src={logo}/>
             </div>
+            <li className="nav-item">
+                <Link className="nav-link" to="/profile">Back to My Profile</Link>
+            </li>
             <div className="card">
                 <table className="table">
                     <thead>
                     <tr>
                         <th scope="col">Full Name</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Profile Photo</th>
                         <th scope="col">Phone</th>
                         <th scope="col">Role</th>
                         <th scope="col">Actions</th>
@@ -30,6 +34,9 @@ const ShowProfiles = ({handleClickEdit, handleClickDelete, users}) => {
                         <tr>
                             <td>{user.fullName}</td>
                             <td>{user.email}</td>
+                            <td>
+                                <img src={user.profilePhotoUrl} width={40} height={40} alt={user.fullName}/>
+                            </td>
                             <td>{user.phone}</td>
                             <td>{user.role}</td>
                             <td>
@@ -43,6 +50,9 @@ const ShowProfiles = ({handleClickEdit, handleClickDelete, users}) => {
                     </tbody>
                 </table>
             </div>
+            <li className="nav-item">
+                <Link className="nav-link" to="/profile/add">Add New User</Link>
+            </li>
             <li className="nav-item">
                 <Link className="nav-link" to="/logout">Logout</Link>
             </li>

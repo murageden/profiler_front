@@ -1,25 +1,25 @@
 import React from 'react'
+import logo from './../logo.png'
 import './../login/login.css'
-import API from "../api"
-import logo from "../logo.png"
+import API from "./../api"
+import {Link, Redirect} from 'react-router-dom'
+import {faEye, faEyeSlash, faUser, faUserSecret, faEnvelope, faPhone, faImage} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faEnvelope, faEye, faEyeSlash, faImage, faPhone, faUser, faUserSecret} from "@fortawesome/free-solid-svg-icons"
-import {Link} from "react-router-dom"
 
-export default class EditProfile extends React.Component {
+export default class CreateProfile extends React.Component {
     constructor(props) {
         super(props)
         this.passwordInput = React.createRef()
         this.state = {
-            profile: {},
-            id: localStorage.getItem('editingId') || '',
             error: '',
-            email: '',
+            token: '',
+            id: '',
+            email: null,
             role: 'normal_user',
-            fullName: '',
-            avatar: '',
-            phone: '',
-            password: '',
+            fullName: null,
+            avatar: null,
+            phone: null,
+            password: null,
             eye: true,
             upload: null,
             loading: false
@@ -28,12 +28,12 @@ export default class EditProfile extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    componentDidMount() {
-        API.get(`/users/${this.state.id}`).then(res => {
-            this.setState({
-                profile: res.data.user
-            })
+    handleChange(e) {
+        this.setState({
+            ...this.state,
+            [e.target.name]: e.target.value.trim()
         })
+        this.setState({error: ''})
     }
 
     togglePasswordEye(event) {
@@ -43,6 +43,17 @@ export default class EditProfile extends React.Component {
         return this.passwordInput.current.type === 'password' ?
             this.passwordInput.current.type = 'text' :
             this.passwordInput.current.type = 'password'
+    }
+
+    onFileChangeHandler = event => {
+        event.preventDefault()
+        this.setState({
+            upload: event.target.files[0]
+        })
+        this.setState({
+            error: null,
+            loading: false
+        })
     }
 
     handleSubmit = (e) => {
@@ -71,37 +82,39 @@ export default class EditProfile extends React.Component {
                 this.setState({
                     avatar
                 })
-                if (!this.state.fullName || !this.state.avatar || !this.state.phone || !this.state.email || !this.state.password) {
-                    console.log(this.state)
+                if (!this.state.fullName || !this.state.avatar || !this.state.role || !this.state.phone || !this.state.email || !this.state.password) {
                     this.setState({
                         error: "Missing fields were supplied",
                         loading: false
                     });
                     return false;
                 } else {
-                    console.log(this.state)
+                    API.post('/users/register', {
+                        email: this.state.email.trim(),
+                        fullName: this.state.fullName.trim(),
+                        role: this.state.role,
+                        avatar: this.state.avatar,
+                        phone: this.state.phone,
+                        password: this.state.password.trim()
+                    }).then(res => {
+                        if (res.status === 201) {
+                            window.location.replace('/profile/admin')
+                        } else {
+                            this.setState({
+                                error: "There was an error uploading the data",
+                                loading: false
+                            })
+                            return false
+                        }
+                    }).catch(e => {
+                        this.setState({
+                            error: 'Registration fail',
+                            loading: false
+                        })
+                    })
                 }
             })
         }
-    }
-
-    handleChange(e) {
-        this.setState({
-            ...this.state,
-            [e.target.name]: e.target.value.trim()
-        })
-        this.setState({error: ''})
-    }
-
-    onFileChangeHandler = event => {
-        event.preventDefault()
-        this.setState({
-            upload: event.target.files[0]
-        })
-        this.setState({
-            error: null,
-            loading: false
-        })
     }
 
     render() {
@@ -119,18 +132,18 @@ export default class EditProfile extends React.Component {
                             <FontAwesomeIcon className="dark" icon={faUser}/>
                             <label htmlFor="fullName">Full Name</label>
                             <input type="text" name="fullName" id="fullName"
-                                   defaultValue={this.state.profile.fullName} onChange={this.handleChange} placeholder="Full Name" required/>
+                                   onChange={this.handleChange} placeholder="Full Name" required/>
                         </div>
                         <div className="input-group-custom">
                             <FontAwesomeIcon className="dark" icon={faEnvelope}/>
                             <label htmlFor="email">Email</label>
-                            <input type="email" name="email" id="email" defaultValue={this.state.profile.email}
+                            <input type="email" name="email" id="email" value={this.state.email}
                                    onChange={this.handleChange} placeholder="Email" required/>
                         </div>
                         <div className="input-group-custom">
                             <FontAwesomeIcon className="dark" icon={faPhone}/>
                             <label htmlFor="phone">Phone</label>
-                            <input type="phone" name="phone" id="phone" defaultValue={this.state.profile.phone}
+                            <input type="phone" name="phone" id="phone" value={this.state.phone}
                                    onChange={this.handleChange} placeholder="Phone" required/>
                         </div>
 
@@ -149,7 +162,7 @@ export default class EditProfile extends React.Component {
                             <label htmlFor="password">Password</label>
                             <input type="password" ref={this.passwordInput} name="password" id="password"
                                    value={this.state.password}
-                                   onChange={this.handleChange} placeholder="New Password"
+                                   onChange={this.handleChange} placeholder="Password"
                                    required/>
                             <FontAwesomeIcon className="light clickable"
                                              onClick={(event => this.togglePasswordEye(event))}
@@ -162,7 +175,7 @@ export default class EditProfile extends React.Component {
                             <Link className="nav-link" to="/logout">Log Out</Link>
                         </li>
 
-                        <input type="submit" onClick={this.handleSubmit} value="Submit Changes"/>
+                        <input type="submit" onClick={this.handleSubmit} value="Create User"/>
                     </form>
                 </div>
                 <div id='bottom'>

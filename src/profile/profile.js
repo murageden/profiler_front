@@ -23,7 +23,8 @@ export default class Profile extends React.Component {
         })
     }
 
-    handleClickEdit() {
+    handleClickEdit(userId) {
+        localStorage.setItem('editingId', userId)
         window.location.replace('/profile/edit')
     }
 

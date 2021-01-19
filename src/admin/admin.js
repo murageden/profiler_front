@@ -20,12 +20,25 @@ export default class AdminProfile extends React.Component {
     }
 
     handleClickEdit(userId) {
-        console.log(userId)
-        // window.location.replace(`/profile/admin/edit/${userId}`)
+        localStorage.setItem('editingId', userId)
+        window.location.replace('/profile/edit')
     }
 
-    handleClickDelete(userId) {
-        console.log(userId)
+    handleClickDelete = (userId) => {
+        API.delete(`/users/${userId}`, {
+            method: 'DELETE'
+        }).then(res => {
+            if (res.status === 200) {
+                this.setState({
+                    users: this.state.users.filter(function (obj) {
+                        return obj.id !== userId
+                    })
+                })
+            }
+            else {
+                console.log('Error deleting user')
+            }
+        })
     }
 
     render() {
