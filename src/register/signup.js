@@ -16,6 +16,7 @@ export default class Register extends React.Component {
         this.state = {
             error: '',
             token: '',
+            id: '',
             email: null,
             role: 'normal_user',
             fullName: null,
@@ -38,9 +39,10 @@ export default class Register extends React.Component {
         this.setState({error: ''})
     }
 
-    saveToLocalStorage(token) {
+    saveToLocalStorage(token, id) {
         localStorage.clear()
         localStorage.setItem('accessToken', token)
+        localStorage.setItem('userId', id)
     }
 
     togglePasswordEye(event) {
@@ -116,8 +118,9 @@ export default class Register extends React.Component {
                     }).then(res => {
                         if (res.status === 201) {
                             const token = res.data.accessToken
-                            this.setState({token})
-                            this.saveToLocalStorage(token)
+                            const userId = res.data.id
+                            this.setState({token, userId})
+                            this.saveToLocalStorage(token, userId)
                             window.location.replace('/profile')
                         } else {
                             this.setState({

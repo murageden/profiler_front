@@ -32,7 +32,6 @@ const ShowProfiles = ({handleClickEdit, handleClickDelete, users}) => {
                             <td>{user.email}</td>
                             <td>{user.phone}</td>
                             <td>{user.role}</td>
-                            <td>{user.role}</td>
                             <td>
                                 <div className="end">
                                     <FontAwesomeIcon icon={faEdit} onClick={() => handleClickEdit(user.id)}/>
